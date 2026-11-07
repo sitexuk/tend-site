@@ -42,7 +42,7 @@
   h2.section { font-size: 30px; margin-top: 64px; }
   @media (max-width: 760px) {
     .hero, .split, .pillars, .tide-inner { grid-template-columns: 1fr; }
-    .tide-inner { padding: 28px 22px 170px; }
+    .tide-inner { padding: 28px 22px 200px; }
     .tide-count { text-align: left; }
     .phone { max-width: 280px; }
   }
@@ -191,7 +191,7 @@
     }
     ctx.clearRect(0, 0, w, h);
     for (const L of layers) {
-      const top = h - (70 + 90 * level) + L.d, crest = [];
+      const top = h - (56 + 74 * level) + L.d, crest = [];
       ctx.beginPath(); ctx.moveTo(0, h);
       for (let x = 0; x <= w + 6; x += 6) {
         const u = x / w * Math.PI;
