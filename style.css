@@ -1,14 +1,17 @@
-:root { --bg:#F4F6F8; --card:#FFFFFF; --text:#1A2029; --soft:#4A5463; --muted:#6B7583; --accent:#3E8C83; --line:#E3E8ED; }
-@media (prefers-color-scheme: dark) { :root { --bg:#11151B; --card:#1A2029; --text:#E3E7EE; --soft:#AEB6C2; --muted:#7D8796; --accent:#9FC9C2; --line:#28303B; } }
+/* Tide palette, matching the app (dark first). */
+:root { --bg:#11151B; --card:#1A2029; --raised:#222A35; --text:#E3E7EE; --soft:#AEB6C2; --muted:#7D8796; --accent:#9FC9C2; --on-accent:#0F2A27; --line:#28303B;
+        --body:#9FC9C2; --mind:#B7B3E6; --heart:#E3B1BC; --home:#E2C49A; color-scheme: dark; }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--text); font: 17px/1.6 ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif; }
-main { max-width: 680px; margin: 0 auto; padding: 48px 20px 64px; }
+main { max-width: 680px; margin: 0 auto; padding: 40px 20px 64px; }
 .mark { width:44px; height:44px; border-radius:50%; border:6px solid var(--line); border-top-color:var(--accent); border-right-color:var(--accent); transform: rotate(20deg); margin-bottom:20px; }
 h1 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing:-0.01em; }
 h2 { font-size: 20px; font-weight: 600; margin: 36px 0 8px; }
+h3 { color: var(--text); }
 p, li { color: var(--soft); }
+strong { color: var(--text); }
 .lead { font-size: 19px; color: var(--soft); margin-top: 0; }
-.card { background: var(--card); border-radius: 20px; padding: 20px 22px; margin: 24px 0; }
+.card { background: var(--card); border-radius: 22px; padding: 20px 22px; margin: 24px 0; }
 a { color: var(--accent); }
 .small { font-size: 14px; color: var(--muted); }
 footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 16px; }

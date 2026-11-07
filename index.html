@@ -13,11 +13,19 @@
 <link rel="stylesheet" href="style.css">
 <style>
   main { max-width: 1040px; }
-  .hero { display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items:center; padding-top: 12px; }
-  .hero h1 { font-size: clamp(40px, 6vw, 60px); line-height: 1.05; margin: 18px 0 14px; }
-  .hero .lead { font-size: 20px; max-width: 30em; }
-  .appicon { width:72px; height:72px; border-radius:18px; display:block; }
-  .badge { display:inline-flex; align-items:center; gap:10px; background: var(--text); color: var(--bg); border-radius: 14px; padding: 12px 20px; font-weight:600; text-decoration:none; margin-top: 10px; }
+  .tide { position: relative; background: var(--card); border-radius: 32px; overflow: hidden; margin-top: 8px; }
+  .tide canvas { position:absolute; inset:0; width:100%; height:100%; }
+  .tide-inner { position: relative; display:grid; grid-template-columns: 1.25fr 0.75fr; gap: 24px; padding: 36px 36px 190px; }
+  .tide h1 { font-size: clamp(38px, 5.6vw, 58px); line-height: 1.05; margin: 18px 0 14px; }
+  .tide .lead { font-size: 19px; max-width: 30em; }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:600; font-size:20px; }
+  .appicon { width:52px; height:52px; border-radius:13px; display:block; }
+  .tide-count { align-self: end; text-align: right; }
+  .tide-count .num { font-size: clamp(64px, 10vw, 104px); font-weight: 500; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+  .tide-count .cap { color: var(--soft); font-size: 17px; }
+  .tide-count .sub { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  .hero { display:grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; align-items:center; margin-top: 56px; }
+  .badge { display:inline-flex; align-items:center; gap:10px; background: var(--accent); color: var(--on-accent); border-radius: 14px; padding: 12px 20px; font-weight:600; text-decoration:none; margin-top: 10px; }
   .badge small { display:block; font-weight:400; font-size:12px; opacity:.75; }
   .note { font-size:14px; color: var(--muted); margin-top: 10px; }
   .phone { width:100%; max-width:360px; border-radius: 36px; display:block; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
@@ -33,7 +41,9 @@
   .not { color: var(--muted); }
   h2.section { font-size: 30px; margin-top: 64px; }
   @media (max-width: 760px) {
-    .hero, .split, .pillars { grid-template-columns: 1fr; }
+    .hero, .split, .pillars, .tide-inner { grid-template-columns: 1fr; }
+    .tide-inner { padding: 28px 22px 170px; }
+    .tide-count { text-align: left; }
     .phone { max-width: 280px; }
   }
 </style>
@@ -41,15 +51,31 @@
 <body>
 <main>
 
-  <section class="hero">
-    <div>
-      <img class="appicon" src="images/icon.png" alt="Tend app icon">
-      <h1>The habit tracker that knows you're busy.</h1>
-      <p class="lead">Tend is for people with full lives: work, kids, family, everything. No streaks to break. Just a gentle weekly rhythm, and a reminder that small steps still count.</p>
-      <a class="badge" href="#download"> <span>Coming soon<small>on the App Store for iPhone</small></span></a>
-      <p class="note">Free for your five habits. No account. No ads. No tracking.</p>
+  <section class="tide" aria-label="Tend">
+    <canvas id="tide" aria-hidden="true"></canvas>
+    <div class="tide-inner">
+      <div class="tide-copy">
+        <div class="brand"><img class="appicon" src="images/icon.png" alt=""> <span>Tend</span></div>
+        <h1>The habit tracker that knows you're busy.</h1>
+        <p class="lead">For people with full lives: work, kids, family, everything. No streaks to break. Just a gentle weekly rhythm, and a reminder that small steps still count.</p>
+        <a class="badge" href="#download"><span>Coming soon<small>on the App Store for iPhone</small></span></a>
+        <p class="note">Free for your five habits. No account. No ads. No tracking.</p>
+      </div>
+      <div class="tide-count">
+        <div class="num" id="count">0</div>
+        <div class="cap">times you've shown up this week</div>
+        <div class="sub">Every time you show up, the tide rises. It never drains.</div>
+      </div>
     </div>
-    <img class="phone" src="images/1-today.jpg" alt="Tend's Today screen with five habits and a gentle rising tide">
+  </section>
+
+  <section class="hero">
+    <img class="phone" src="images/1-today.jpg" alt="Tend's Today screen with five habits and the rising tide">
+    <div>
+      <h2 class="section" style="margin-top:0">Ten seconds a day</h2>
+      <p>Tap a habit to log it. Hold for the tiny version. A soft bloom, a gentle buzz, a kind word, and back to your day.</p>
+      <p>Each part of life has its own colour: <span style="color:var(--body)">Body</span>, <span style="color:var(--mind)">Mind</span>, <span style="color:var(--heart)">Heart</span> and <span style="color:var(--home)">Home</span>. Together they make your tide.</p>
+    </div>
   </section>
 
   <section class="pillars">
@@ -141,5 +167,48 @@
     <p class="small">© 2026 Tom Bettle · <a href="privacy/">Privacy Policy</a> · <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a> · <a href="mailto:support.tend@icloud.com">Contact</a></p>
   </footer>
 </main>
+<script>
+// The tide: four ribbons in the life-area colours, glassy crests, rising as the count goes up.
+(() => {
+  const canvas = document.getElementById('tide'), ctx = canvas.getContext('2d');
+  const countEl = document.getElementById('count');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const layers = [
+    { c: [183,179,230], o: .20, a: 9, f: 1.7, s: .55, p: 0.0, d: -18 },
+    { c: [227,177,188], o: .22, a: 8, f: 2.6, s: .83, p: 1.3, d: -8 },
+    { c: [159,201,194], o: .30, a: 8, f: 2.1, s: 1.21, p: 2.6, d: 3 },
+    { c: [226,196,154], o: .26, a: 6, f: 3.1, s: 1.47, p: 4.0, d: 15 },
+  ];
+  const target = 15; let shown = still ? target : 0, level = still ? 1 : 0, start = performance.now();
+  function size() { const r = canvas.getBoundingClientRect(), k = devicePixelRatio || 1; canvas.width = r.width * k; canvas.height = r.height * k; ctx.setTransform(k, 0, 0, k, 0, 0); }
+  addEventListener('resize', size); size();
+  function frame(now) {
+    const t = now / 1000, w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!still) {
+      const p = Math.min((now - start) / 3200, 1), e = 1 - Math.pow(1 - p, 3);
+      level = e; const n = Math.round(target * e);
+      if (n !== shown) { shown = n; countEl.textContent = n; }
+    }
+    ctx.clearRect(0, 0, w, h);
+    for (const L of layers) {
+      const top = h - (70 + 90 * level) + L.d, crest = [];
+      ctx.beginPath(); ctx.moveTo(0, h);
+      for (let x = 0; x <= w + 6; x += 6) {
+        const u = x / w * Math.PI;
+        const y = top + Math.sin(u * L.f + t * L.s + L.p) * L.a + Math.sin(u * L.f * 1.9 - t * L.s * .6 + L.p * 2.3) * L.a * .4;
+        ctx.lineTo(x, y); crest.push([x, y]);
+      }
+      ctx.lineTo(w, h); ctx.closePath();
+      const g = ctx.createLinearGradient(0, top - L.a, 0, top + 70);
+      g.addColorStop(0, `rgba(${L.c},${Math.min(L.o * 2.2, 1)})`); g.addColorStop(1, `rgba(${L.c},0)`);
+      ctx.fillStyle = g; ctx.fill();
+      ctx.beginPath(); crest.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+      ctx.strokeStyle = `rgba(${L.c},${Math.min(L.o * 3, .85)})`; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+    if (!still) requestAnimationFrame(frame);
+  }
+  countEl.textContent = shown; requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
