@@ -10,7 +10,7 @@
 <meta property="og:image" content="https://sitexuk.github.io/tend-site/images/1-today.jpg">
 <link rel="icon" href="images/icon.png">
 <link rel="apple-touch-icon" href="images/icon.png">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 <style>
   main { max-width: 1040px; }
   .tide { position: relative; background: var(--card); border-radius: 32px; overflow: hidden; margin-top: 8px; }
@@ -25,7 +25,11 @@
   .tide-count .cap { color: var(--soft); font-size: 17px; }
   .tide-count .sub { color: var(--muted); font-size: 14px; margin-top: 6px; }
   .tide-count canvas.tide-mobile { display: none; position: absolute; inset: 0; width: 100%; height: 100%; }
-  .hero { display:grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; align-items:center; margin-top: 56px; }
+  .hero { display:grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items:center; margin-top: 64px; }
+  .facts { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 22px 0; }
+  .facts div { background: var(--card); border-radius: 18px; padding: 14px 16px; }
+  .facts strong { display:block; margin-bottom: 2px; }
+  .facts span { color: var(--soft); font-size: 15px; }
   .badge { display:inline-flex; align-items:center; gap:10px; background: var(--accent); color: var(--on-accent); border-radius: 14px; padding: 12px 20px; font-weight:600; text-decoration:none; margin-top: 10px; }
   .badge small { display:block; font-weight:400; font-size:12px; opacity:.75; }
   .note { font-size:14px; color: var(--muted); margin-top: 10px; }
@@ -42,7 +46,7 @@
   .not { color: var(--muted); }
   h2.section { font-size: 30px; margin-top: 64px; }
   @media (max-width: 760px) {
-    .hero, .split, .pillars, .tide-inner { grid-template-columns: 1fr; }
+    .hero, .split, .pillars, .tide-inner, .facts { grid-template-columns: 1fr; }
     /* Phones: the tide card first, then the intro card underneath. */
     .tide { background: transparent; border-radius: 0; overflow: visible; }
     .tide > canvas { display: none; }
@@ -78,11 +82,17 @@
   </section>
 
   <section class="hero">
-    <img class="phone" src="images/1-today.jpg" alt="Tend's Today screen with five habits and the rising tide">
+    <img class="phone" src="images/today-raw.jpg" alt="Tend's Today screen: five habits under a gently rising tide">
     <div>
       <h2 class="section" style="margin-top:0">Ten seconds a day</h2>
-      <p>Tap a habit to log it. Hold for the tiny version. A soft bloom, a gentle buzz, a kind word, and back to your day.</p>
-      <p>Each part of life has its own colour: <span style="color:var(--body)">Body</span>, <span style="color:var(--mind)">Mind</span>, <span style="color:var(--heart)">Heart</span> and <span style="color:var(--home)">Home</span>. Together they make your tide.</p>
+      <p>Open Tend and your week is right there: a calm tide on top, your habits underneath. Tap one when you've done it. Hold it for the tiny version. A soft bloom, a gentle buzz, a kind word, and you're back to your day.</p>
+      <div class="facts">
+        <div><strong>Circle = today.</strong> <span>Done, tiny, or not yet. Nothing is ever "missed".</span></div>
+        <div><strong>Bar = this week.</strong> <span>"2 of 3 this week", on whichever days suit you.</span></div>
+        <div><strong>The tide = you.</strong> <span>It rises every time you show up, and never drains.</span></div>
+        <div><strong>Did more later?</strong> <span>Tap a tiny day to make it full. Forgot yesterday? Tap the day on your week.</span></div>
+      </div>
+      <p>Each part of life has its own colour: <span style="color:var(--body)">Body</span>, <span style="color:var(--mind)">Mind</span>, <span style="color:var(--heart)">Heart</span> and <span style="color:var(--home)">Home</span>. Together they make your tide, and over the months, your tide line: one gentle wave for every week.</p>
     </div>
   </section>
 
